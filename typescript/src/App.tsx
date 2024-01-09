@@ -7,6 +7,7 @@ import CountryDetails from './pages/CountryDetails';
 import { lightTheme, darkTheme } from './components/Theme';
 import { useState } from 'react';
 import Header from './components/Header';
+import { Toaster } from 'react-hot-toast';
 
 const App: React.FC = () => {
   const [themeSwitch, setThemeSwitch] = useState(true);
@@ -20,6 +21,7 @@ const App: React.FC = () => {
           <Route path='/' element={<Home />} />
           <Route path='/countrydetails/:id' element={<CountryDetails />} />
         </Routes>
+        <Toaster/>
       </ThemeProvider>
     </>
   );
