@@ -4,7 +4,7 @@
  import { useEffect, useState } from "react";
  import {ScaleLoader} from 'react-spinners'
 
-const Countries = () => {
+const Countries = ({search, filter}) => {
 
 const [countries, setCountries] = useState([]);
 const [loading, setLoading] = useState(true);
@@ -26,7 +26,9 @@ useEffect(()=>{
 
   return 
     <Stack flexDirection={'row'} justifyContent={'space-around'} alignItems={'center'} gap={5} flexWrap={'wrap'}>
-        {loading ? <ScaleLoader color="lightcoral" /> : countries.map((country, index) =>(
+        {loading ? <ScaleLoader color="lightcoral" /> : countries.filter((searchedCountry)=>{
+            return search.towerLowerCase()=== '' ? searchedCountry : searchedCountry.name.common.toLowerCase().includes(search);
+        }).map((country, index) =>(
             <Card key={index} sx={{width:250,textDecoration:'none'}} component={Link} to={`countrydetails/${country.name.common}`}>
 
 
@@ -39,12 +41,15 @@ useEffect(()=>{
                     </Typography>
                     <Typography fontFamily={'Nunito Sans'}> 
                     <span style={{fontWeight:'600'}}>Population:</span>
+                    {country.population}
                     </Typography>
                     <Typography fontFamily={'Nunito Sans'}> 
                     <span style={{fontWeight:'600'}}>Region:</span>
+                    {country.religion}
                     </Typography>
-                    <Typography fontFamily={'Nunito Sans'}> 
+                    <Typography fontFamily={'Nunito Sans'} noWrap> 
                     <span style={{fontWeight:'600'}}>Capital:</span>
+                    {country.capital}
                     </Typography>
                 </CardContent>
             </CardActionArea>
