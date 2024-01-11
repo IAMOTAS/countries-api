@@ -12,7 +12,7 @@ useEffect(()=>{
     const fetchCountriesData = async ()=>{
 
         try{
-            const {data} = await axios.get('https://restcountries.com/v3.1/all'); 
+            const {data} = await axios.get(`'https://restcountries.com/v3.1/all'${filter}`); 
             //console.log(data);
             setCountries(data);
             setLoading(false);
@@ -22,7 +22,7 @@ useEffect(()=>{
         }
     };
     fetchCountriesData();
-},[]);
+},[filter]);
 
   return 
     <Stack flexDirection={'row'} justifyContent={'space-around'} alignItems={'center'} gap={5} flexWrap={'wrap'}>
