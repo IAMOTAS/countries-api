@@ -17,9 +17,11 @@ const Countries = ({ search, filter }: { search: string, filter: string }) => {
                 setCountries(data);
                 setLoading(false);
             } catch (error) {
+                console.error('Error while fetching data:', error);
                 setLoading(false);
                 toast.error('Error while fetching data');
             }
+            
         };
 
         fetchCountriesData();

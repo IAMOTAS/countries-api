@@ -14,24 +14,29 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ArrowBack } from '@mui/icons-material';
 
 const CountryDetails: React.FC = () => {
-  const [countrydetail, setCountryDetail] = useState<any>();
+  const [countryDetail, setCountryDetail] = useState<any>();
   const [loading, setLoading] = useState(true);
   const params = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const fetchCountryByName = async () => {
     try {
-      const { data } = await axios.get(
-        `https://restcountries.com/v3.1/name/${params.id}`
-      );
-      setCountryDetail(data);
-      setLoading(false);
+      const { data } = await axios.get(``);
+      if (Array.isArray(data) && data.length > 0) {
+        setCountryDetail(data[0]);
+        setLoading(false);
+      } else {
+        setLoading(false);
+        toast.error('Country details not found');
+      }
     } catch (error) {
+      console.error('Error while fetching country details:', error);
       navigate(-1);
       setLoading(false);
-      toast.error('Country does not exist by this name on our server');
+      toast.error('Error while fetching country details');
     }
   };
+  
 
   useEffect(() => {
     fetchCountryByName();
@@ -65,7 +70,7 @@ const CountryDetails: React.FC = () => {
         >
           <Box
             component={'img'}
-            src={countrydetail[0].flags.png}
+            src={countryDetail?.flags?.png} // Updated to use optional chaining
             sx={{
               width: { lg: '35%', md: '35%', sm: '100%', xs: '100%' },
             }}
@@ -79,7 +84,7 @@ const CountryDetails: React.FC = () => {
               fontFamily={'Nunito Sans'}
               my={3}
             >
-              {countrydetail[0].name.common}
+              {countryDetail?.name?.common}
             </Typography>
             {/* ... rest of the code */}
             <Stack
@@ -92,9 +97,9 @@ const CountryDetails: React.FC = () => {
               <Typography fontWeight={600} fontFamily={'Nunito Sans'}>
                 Border Countries:{''}
               </Typography>
-              {countrydetail[0].borders === undefined
+              {countryDetail?.borders === undefined
                 ? 'N/A'
-                : countrydetail[0].borders.map((border: string, index: number) => (
+                : countryDetail?.borders.map((border: string, index: number) => (
                     <Paper elevation={2} key={index}>
                       <Button
                         sx={{ textTransform: 'none', px: 3 }}
