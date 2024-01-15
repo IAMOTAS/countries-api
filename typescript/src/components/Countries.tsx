@@ -13,7 +13,7 @@ const Countries = ({ search, filter }: { search: string, filter: string }) => {
     useEffect(() => {
         const fetchCountriesData = async () => {
             try {
-                const { data } = await axios.get(`https://restcountries.com/v3.1/all${filter}`);
+                const { data } = await axios.get('https://restcountries.com/v3.1/all'); // Corrected API endpoint
                 setCountries(data);
                 setLoading(false);
             } catch (error) {
@@ -21,7 +21,6 @@ const Countries = ({ search, filter }: { search: string, filter: string }) => {
                 setLoading(false);
                 toast.error('Error while fetching data');
             }
-            
         };
 
         fetchCountriesData();
@@ -39,7 +38,7 @@ const Countries = ({ search, filter }: { search: string, filter: string }) => {
                     .map((country: any, index: number) => (
                         <Card key={index} sx={{ width: 250, textDecoration: 'none' }} component={Link} to={`countrydetails/${country.name?.common}`}>
                             <CardActionArea>
-                                <CardMedia component='img' height='140' image={'country.flags.png'} alt={country.name?.common} />
+                                <CardMedia component='img' height='140' image={country.flags?.png} alt={country.name?.common} /> {/* Corrected image source */}
                                 <CardContent>
                                     <Typography gutterBottom fontFamily={'Nunito Sans'} fontSize={'1.1rem'} fontWeight={800}>
                                         {country.name?.common}
@@ -50,7 +49,7 @@ const Countries = ({ search, filter }: { search: string, filter: string }) => {
                                     </Typography>
                                     <Typography fontFamily={'Nunito Sans'}>
                                         <span style={{ fontWeight: '600' }}>Region:</span>
-                                        {country.religion}
+                                        {country.region}
                                     </Typography>
                                     <Typography fontFamily={'Nunito Sans'} noWrap>
                                         <span style={{ fontWeight: '600' }}>Capital:</span>

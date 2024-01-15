@@ -13,15 +13,28 @@ import { toast } from 'react-hot-toast';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ArrowBack } from '@mui/icons-material';
 
+interface CountryDetails {
+  name: {
+    common: string;
+  };
+  flags: {
+    png: string;
+  };
+  population: number;
+  region: string;
+  capital: string;
+  borders: string[]; // Add the 'borders' property
+}
+
 const CountryDetails: React.FC = () => {
-  const [countryDetail, setCountryDetail] = useState<any>();
+  const [countryDetail, setCountryDetail] = useState<CountryDetails>();
   const [loading, setLoading] = useState(true);
   const params = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const fetchCountryByName = async () => {
     try {
-      const { data } = await axios.get(``);
+      const { data } = await axios.get(`YOUR_API_ENDPOINT/${params.id}`);
       if (Array.isArray(data) && data.length > 0) {
         setCountryDetail(data[0]);
         setLoading(false);
@@ -36,7 +49,6 @@ const CountryDetails: React.FC = () => {
       toast.error('Error while fetching country details');
     }
   };
-  
 
   useEffect(() => {
     fetchCountryByName();
@@ -70,30 +82,16 @@ const CountryDetails: React.FC = () => {
         >
           <Box
             component={'img'}
-            src={countryDetail?.flags?.png} // Updated to use optional chaining
+            src={countryDetail?.flags?.png}
             sx={{
               width: { lg: '35%', md: '35%', sm: '100%', xs: '100%' },
             }}
           />
-          <Box
-            sx={{ width: { lg: '55%', md: '55%', sm: '100%', xs: '100%' } }}
-          >
-            <Typography
-              variant='h4'
-              fontWeight={800}
-              fontFamily={'Nunito Sans'}
-              my={3}
-            >
+          <Box sx={{ width: { lg: '55%', md: '55%', sm: '100%', xs: '100%' } }}>
+            <Typography variant='h4' fontWeight={800} fontFamily={'Nunito Sans'} my={3}>
               {countryDetail?.name?.common}
             </Typography>
-            {/* ... rest of the code */}
-            <Stack
-              flexDirection={'row'}
-              alignItems={'center'}
-              flexWrap={'wrap'}
-              gap={2}
-              my={3}
-            >
+            <Stack flexDirection={'row'} alignItems={'center'} flexWrap={'wrap'} gap={2} my={3}>
               <Typography fontWeight={600} fontFamily={'Nunito Sans'}>
                 Border Countries:{''}
               </Typography>
